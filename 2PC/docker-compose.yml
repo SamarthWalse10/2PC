@@ -1,0 +1,44 @@
+
+services:
+  coordinator:
+    build: .
+    environment:
+      - NODE_ID=coordinator
+    networks:
+      - twophase_net
+    ports:
+      - "50051:50051"
+      - "50052:50052"
+
+  participant1:
+    build: .
+    environment:
+      - NODE_ID=participant1
+    networks:
+      - twophase_net
+
+  participant2:
+    build: .
+    environment:
+      - NODE_ID=participant2
+    networks:
+      - twophase_net
+
+  participant3:
+    build: .
+    environment:
+      - NODE_ID=participant3
+    networks:
+      - twophase_net
+
+  participant4:
+    build: .
+    environment:
+      - NODE_ID=participant4
+    networks:
+      - twophase_net
+
+networks:
+  twophase_net:
+    driver: bridge
+

@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package twophase;
+
+service VotingService {
+  rpc RequestVote (VoteRequest) returns (VoteResponse) {}
+}
+
+service DecisionService {
+  rpc SendGlobalDecision (GlobalDecision) returns (Ack) {}
+  rpc GetLocalVote (GetLocalVoteRequest) returns (GetLocalVoteResponse) {}
+  rpc MakeGlobalDecision (MakeGlobalDecisionRequest) returns (MakeGlobalDecisionResponse) {}
+}
+
+message VoteRequest {
+  string transaction_id = 1;
+}
+
+message VoteResponse {
+  enum Vote {
+    COMMIT = 0;
+    ABORT = 1;
+  }
+  Vote vote = 1;
+}
+
+message GlobalDecision {
+  enum Decision {
+    GLOBAL_COMMIT = 0;
+    GLOBAL_ABORT = 1;
+  }
+  Decision decision = 1;
+  string transaction_id = 2;
+}
+
+message Ack {
+  bool success = 1;
+}
+
+message GetLocalVoteRequest {
+  string transaction_id = 1;
+}
+
+message GetLocalVoteResponse {
+  VoteResponse.Vote vote = 1;
+}
+
+message MakeGlobalDecisionRequest {
+  repeated VoteResponse votes = 1;
+  string transaction_id = 2;
+}
+
+message MakeGlobalDecisionResponse {
+  GlobalDecision.Decision decision = 1;
+}
